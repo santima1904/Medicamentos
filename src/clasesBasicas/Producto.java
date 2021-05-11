@@ -1,10 +1,11 @@
 package clasesBasicas;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Random;
 
-public abstract class Producto {
+public abstract class Producto implements Serializable {
 
 
     //Atributos
@@ -72,7 +73,7 @@ public abstract class Producto {
     //toString
     @Override
     public String toString() {
-        return "Producto" +
+        return "Producto " +'\''+
                 "codigoBarras='" + codigoBarras + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", fechaCaducidad=" + fechaCaducidad +

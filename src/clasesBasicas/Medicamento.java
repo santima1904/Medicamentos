@@ -48,7 +48,6 @@ public class Medicamento extends Producto{
     public String toString() {
         return super.toString() +
                 "presentacion=" + presentacion +
-                ", principioActivo='" + principioActivo + '\'' +
-                '}';
+                ", principioActivo='" + principioActivo + '\'' ;
     }
 }
