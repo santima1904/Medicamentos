@@ -9,6 +9,7 @@ import java.io.IOException;
 
 public class FileAccess {
 
+
     //crear fichero
     public static void crearFichero(){
         File fichero = new File ("C:\\Users\\smartinez\\Desktop\\Programacion\\Ficheros\\Medicamentos","fichero.txt");
