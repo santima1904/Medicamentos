@@ -50,4 +50,5 @@ public class Medicamento extends Producto{
                 "presentacion=" + presentacion +
                 ", principioActivo='" + principioActivo + '\'' ;
     }
+
 }

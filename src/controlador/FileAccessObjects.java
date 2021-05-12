@@ -1,15 +1,16 @@
 /**
- * Clase para controlar los ficheros, realizar todas las acciones con ellos
+ * Clase para controlar los ficheros con objetos, realizar todas las acciones con ellos
  */
 
 package controlador;
 
 import clasesBasicas.Producto;
-import com.sun.source.tree.TryTree;
+
 
 import java.io.*;
+import java.util.*;
 
-public class FileAccess {
+public class FileAccessObjects {
 
 
     /**
@@ -19,11 +20,13 @@ public class FileAccess {
      * Salida: niunguna
      * Postcondiciones: fichero creaado
      */
-    public static void crearFichero(String ruta){
-        File fichero = new File (ruta, "AntiPandemia.txt");
-        //fichero.renameTo(new File("ruta", nuevo nombre)) para renombrar el fichero
+    public static void crearFichero(String ruta, String nombre){
+
+        File fichero = new File (ruta, nombre);//introduzco la ruta y el nombre del fichero a crear
+
         try {
-            fichero.createNewFile();
+            fichero.createNewFile();//creo el fichero
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -34,11 +37,12 @@ public class FileAccess {
      * Cabecera: public static void leerFichero()
      * Precondiciones: fichero creado
      * Entradas: String nombre
-     * Salida: niunguna
-     * Postcondiciones: Muestra los contenidos de los objetos del fichero
+     * Salida: lista de objetos producto
+     * Postcondiciones: Devuelve una lista con los contenidos de los objetos del fichero
      */
-    public static void leerFichero(String nombre){
+    public static List<Producto> leerFichero(String nombre){
         ObjectInputStream ois = null;
+        List<Producto> productos = new ArrayList<>();
 
         try {
             ois = new ObjectInputStream(new FileInputStream(nombre));
@@ -51,7 +55,7 @@ public class FileAccess {
             while (aux != null) {
                 try{
                     if (aux instanceof Producto)
-                        System.out.println(aux);  // Se escribe en pantalla el objeto
+                       productos.add((Producto) aux);  // Lo guardo en una lista para printarlo despues
 
                     aux = ois.readObject();
                 }catch (EOFException e){
@@ -63,13 +67,14 @@ public class FileAccess {
                 e.printStackTrace();
 
         } finally{
-            assert ois != null;
             try {
+                assert ois != null;
                 ois.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        return productos;
     }
 
     /**
@@ -91,6 +96,7 @@ public class FileAccess {
         }
         finally {
             try {
+                assert oos != null;
                 oos.close();  // Se cierra al terminar.
             } catch (IOException e) {
                 e.printStackTrace();
@@ -103,12 +109,15 @@ public class FileAccess {
     /**
      * Cabecera: public static void ordenarFichero()
      * Precondiciones: fichero creado
-     * Entradas: String nombre
-     * Salida: niunguna
+     * Entradas: Lista de productos
+     * Salida: lista de productos
      * Postcondiciones: Ordena el fichero
      */
-    public static void ordenar(String nombre){
+    public static List<Producto> ordenar(List<Producto> productos){
 
+        Collections.sort(productos);
+
+        return productos;
     }
 
 

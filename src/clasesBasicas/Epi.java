@@ -51,4 +51,5 @@ public class Epi extends Producto{
                 "parteCuerpo=" + parteCuerpo +
                 ", material='" + material + '\'' ;
     }
+
 }
