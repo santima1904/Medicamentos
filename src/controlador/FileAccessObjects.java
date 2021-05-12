@@ -20,9 +20,9 @@ public class FileAccessObjects {
      * Salida: niunguna
      * Postcondiciones: fichero creaado
      */
-    public static void crearFichero(String ruta, String nombre){
+    public static void crearFichero(String nombre){
 
-        File fichero = new File (ruta, nombre);//introduzco la ruta y el nombre del fichero a crear
+        File fichero = new File (nombre);//introduzco la ruta y el nombre del fichero a crear
 
         try {
             fichero.createNewFile();//creo el fichero
@@ -85,10 +85,18 @@ public class FileAccessObjects {
      * Postcondiciones: Inserta el objeto p en el fichero
      */
     public static void escribir(String nombre, Producto p) {
+        File fichero = new File(nombre);
 
         ObjectOutputStream oos = null;
+
         try {
-            oos = new ObjectOutputStream(new FileOutputStream(nombre));
+            if (fichero.exists()){
+                oos = new MyObjectOutputStream(new FileOutputStream(nombre, true));
+            }else{
+                fichero.createNewFile();
+                oos = new ObjectOutputStream(new FileOutputStream(nombre, true));
+            }
+
             oos.writeObject(p);
 
         } catch (IOException e) {

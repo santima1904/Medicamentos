@@ -26,7 +26,7 @@ public abstract class Producto implements Serializable, Comparable<Producto> {
     //Constructor con parametros
 
     public Producto(String codigoBarras, String nombre, LocalDate fechaCaducidad, double precio) {
-        this.codigoBarras = " ";
+        this.codigoBarras = codigoBarras;
         this.nombre = nombre;
         this.fechaCaducidad = fechaCaducidad;
         this.precio = precio;
