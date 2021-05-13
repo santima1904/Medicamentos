@@ -5,10 +5,11 @@ import clasesBasicas.Medicamento;
 import clasesBasicas.Producto;
 import enums.ParteCuerpo;
 import enums.Presentacion;
+import gestion.FileAccessObjects;
+import gestion.Gestora;
 import vista.Mensajes;
 
-import javax.swing.*;
-import java.io.File;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -30,15 +31,27 @@ public class Main {
         Epi e2 = new Epi("4", "cuarto", fecha, 10, ParteCuerpo.O, "si");
 
 
-
-        FileAccessObjects.escribir(NOMBRE, m2);
-        FileAccessObjects.escribir(NOMBRE, e1);
-        FileAccessObjects.escribir(NOMBRE, m1);
-        FileAccessObjects.escribir(NOMBRE, e2);
+        System.out.println("------------ borrar fichero ------------");
+        FileAccessObjects.borrarFichero(NOMBRE);
+        System.out.println("------------ contenido fichero sin ordenar------------");
+        FileAccessObjects.escribirProducto(NOMBRE, m2);
+        //FileAccessObjects.escribirProducto(NOMBRE, e1);
+        FileAccessObjects.escribirProducto(NOMBRE, m1);
+        //FileAccessObjects.escribirProducto(NOMBRE, e2);
         lista = FileAccessObjects.leerFichero(NOMBRE);
         Mensajes.mostrarLista(lista);
-        lista = FileAccessObjects.ordenar(lista);
-        System.out.println("------------");
+        lista = Gestora.ordenar(lista);
+        FileAccessObjects.sobreescribirLista(NOMBRE, lista);
+        System.out.println("------------ contenido lista ordenado------------");
+        Mensajes.mostrarLista(lista);
+        System.out.println("------------ contenido fichero ordenado------------");
+        lista = FileAccessObjects.leerFichero(NOMBRE);
+        Mensajes.mostrarLista(lista);
+        System.out.println("------------ contenido fichero ordeando con nuevos productos------------");
+        FileAccessObjects.escribirProducto(NOMBRE, e1);
+        FileAccessObjects.escribirProducto(NOMBRE, e2);
+        lista = FileAccessObjects.leerFichero(NOMBRE);
+        lista = Gestora.ordenar(lista);
         Mensajes.mostrarLista(lista);
     }
 }

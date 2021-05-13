@@ -2,8 +2,6 @@ package clasesBasicas;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Objects;
-import java.util.Random;
 
 public abstract class Producto implements Serializable, Comparable<Producto> {
 
