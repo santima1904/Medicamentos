@@ -12,6 +12,11 @@ import java.util.*;
 
 public class FileAccessObjects {
 
+    //TODO booleanos en las excepciones para mostrar mensajes, cambiar el e. printStack por boolean = false
+    //TODO metodo para validar en el fichero que no hay un objeto con el codigo dado
+    //TODO cambiar inserccion para que sea producto a pruducto(cambiar sobreescribirFichero)
+    //TODO Hacerlo con fichero de movimiento sin consolidar datos
+
 
     /**
      * Cabecera: public static void crearFichero()

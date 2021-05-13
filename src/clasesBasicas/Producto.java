@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 public abstract class Producto implements Serializable, Comparable<Producto> {
-
+//TODO cambiar compareto con negativos y positivos en vez de 1 y -1
 
     //Atributos
     private String codigoBarras;
