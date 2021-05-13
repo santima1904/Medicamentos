@@ -16,6 +16,7 @@ public class FileAccessObjects {
     //TODO metodo para validar en el fichero que no hay un objeto con el codigo dado
     //TODO cambiar inserccion para que sea producto a pruducto(cambiar sobreescribirFichero)
     //TODO Hacerlo con fichero de movimiento sin consolidar datos
+    //TODO para borrar  un producto en un fichero, hace falta fichero auxiliar
 
 
     /**
