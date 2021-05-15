@@ -10,17 +10,27 @@ import gestion.Gestora;
 import vista.Mensajes;
 
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
 
 
 
 public class Main {
+
+    private static void insertarListaOrdenada(List<Producto> productos){
+        FileAccessObjects.borrarFichero();
+
+        for (Producto p:productos) {
+            FileAccessObjects.escribirProducto(p);
+        }
+    }
+
     public static void main(String[] args) {
 
         final String CLASE = "C:\\Users\\smartinez\\Desktop\\Programacion\\Ficheros\\Medicamentos";
         final String CASA = "C:\\Users\\TESTER\\Desktop\\programacion\\Medicamentos";
-        final String NOMBRE = "Antipandemia.txt";
+
 
         List<Producto> lista;
 
@@ -33,26 +43,31 @@ public class Main {
 
 
         System.out.println("------------ borrar fichero ------------");
-        FileAccessObjects.borrarFichero(NOMBRE);
+        FileAccessObjects.borrarFichero();
         System.out.println("------------ contenido fichero sin ordenar------------");
-        FileAccessObjects.escribirProducto(NOMBRE, m2);
+        FileAccessObjects.escribirProducto(m2);
         //FileAccessObjects.escribirProducto(NOMBRE, e1);
-        FileAccessObjects.escribirProducto(NOMBRE, m1);
-        //FileAccessObjects.escribirProducto(NOMBRE, e2);
-        lista = FileAccessObjects.leerFichero(NOMBRE);
+        FileAccessObjects.escribirProducto(m1);
+        lista = FileAccessObjects.leerFichero();
         Mensajes.mostrarLista(lista);
         lista = Gestora.ordenar(lista);
-        FileAccessObjects.sobreescribirLista(NOMBRE, lista);
+        insertarListaOrdenada(lista);
         System.out.println("------------ contenido lista ordenado------------");
         Mensajes.mostrarLista(lista);
         System.out.println("------------ contenido fichero ordenado------------");
-        lista = FileAccessObjects.leerFichero(NOMBRE);
+        lista = FileAccessObjects.leerFichero();
         Mensajes.mostrarLista(lista);
         System.out.println("------------ contenido fichero ordeando con nuevos productos------------");
-        FileAccessObjects.escribirProducto(NOMBRE, e1);
-        FileAccessObjects.escribirProducto(NOMBRE, e2);
-        lista = FileAccessObjects.leerFichero(NOMBRE);
+        FileAccessObjects.escribirProducto(e1);
+        FileAccessObjects.escribirProducto(e2);
+        lista = FileAccessObjects.leerFichero();
         lista = Gestora.ordenar(lista);
         Mensajes.mostrarLista(lista);
+        System.out.println("------------ borro producto 1------------");
+        FileAccessObjects.borrarProducto("1");
+        lista = FileAccessObjects.leerFichero();
+        lista = Gestora.ordenar(lista);
+        Mensajes.mostrarLista(lista);
+
     }
 }
