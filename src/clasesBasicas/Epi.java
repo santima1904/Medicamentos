@@ -47,9 +47,10 @@ public class Epi extends Producto{
 
     @Override
     public String toString() {
-        return super.toString() +
-                "parteCuerpo=" + parteCuerpo +
-                ", material='" + material + '\'' ;
+        return super.toString()+","
+                +parteCuerpo+","
+                +material
+                ;
     }
 
 }

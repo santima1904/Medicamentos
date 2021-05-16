@@ -1,7 +1,12 @@
-package gestion;
+package controlador;
 
-import clasesBasicas.Producto;
+import clasesBasicas.*;
 
+import enums.Presentacion;
+import gestionFicheros.FileAccessText;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,4 +27,7 @@ public class Gestora {
     }
 
 
+
+    //TODO HACERLO TODO EN METODO LEER PARA HACERLO EN BUCLE
+    //TODO MOVER METODOS A FILEACCES
 }

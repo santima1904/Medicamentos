@@ -71,11 +71,11 @@ public abstract class Producto implements Serializable, Comparable<Producto> {
     //toString
     @Override
     public String toString() {
-        return "Producto " +'\''+
-                "codigoBarras='" + codigoBarras + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", fechaCaducidad=" + fechaCaducidad +
-                ", precio=" + precio
+        return getClass().getSimpleName()+","
+                +codigoBarras+","
+                +nombre+","
+                +fechaCaducidad+","
+                +precio
                 ;
     }
 

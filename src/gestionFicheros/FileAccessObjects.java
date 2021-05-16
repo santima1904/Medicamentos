@@ -2,7 +2,7 @@
  * Clase para controlar los ficheros con objetos, realizar todas las acciones con ellos
  */
 
-package gestion;
+package gestionFicheros;
 
 import clasesBasicas.Producto;
 
@@ -13,13 +13,11 @@ import java.util.*;
 public class FileAccessObjects {
 
     //TODO booleanos en las excepciones para mostrar mensajes, cambiar el e. printStack por boolean = false
-    //TODO metodo para validar en el fichero que no hay un objeto con el codigo dado
     //TODO Hacerlo con fichero de movimiento sin consolidar datos
-    //TODO para borrar  un producto en un fichero, hace falta fichero auxiliar
 
-    public static final String NOMBRE_DIRECTO = "./Antipandemia.txt";
+    public static final String NOMBRE_DIRECTO = "Antipandemia.txt";
     public static final String NOMBRE_MOVIMIENTO = "AntipandemiaAux.txt";
-    public static final String AUXILIAR = "./Aux.txt";
+    public static final String AUXILIAR = "Aux2.txt";
 
 
     /**
@@ -45,7 +43,7 @@ public class FileAccessObjects {
     /**
      * Cabecera: public static void leerFichero()
      * Precondiciones: fichero creado
-     * Entradas: String nombre
+     * Entradas: ninguno
      * Salida: lista de objetos producto
      * Postcondiciones: Devuelve una lista con los contenidos de los objetos del fichero
      */
@@ -78,8 +76,9 @@ public class FileAccessObjects {
 
         } finally{
             try {
-                assert ois != null;
-                ois.close();//cierro el objectInputStream
+                if (ois != null) {
+                    ois.close();//cierro el objectInputStream
+                }
             } catch (IOException e) {//si salta la excepcion  IOException
                 e.printStackTrace();//muestro la excepcion
             }
@@ -90,7 +89,7 @@ public class FileAccessObjects {
     /**
      * Cabecera: public static void escribirProducto()
      * Precondiciones: fichero creado
-     * Entradas: String nombre, producto p
+     * Entradas: producto p
      * Salida: niunguna
      * Postcondiciones: Inserta el objeto p en el fichero
      */
@@ -113,7 +112,9 @@ public class FileAccessObjects {
             e.printStackTrace();//muestro la excepcion
         }
         finally {
-            cerrarObjectOutput(oos);//llamo al metodo para cerrar el ObjectOutputStream
+            if (oos != null) {
+                cerrarObjectOutput(oos);//llamo al metodo para cerrar el ObjectOutputStream
+            }
         }
 
     }
@@ -137,6 +138,70 @@ public class FileAccessObjects {
         try{
             ficheroaUX.createNewFile();
 
+            ois = new ObjectInputStream(new FileInputStream(NOMBRE_DIRECTO));//uso el ObjectInputStream de java para leer en fichero
+
+            oos = new ObjectOutputStream(new FileOutputStream(AUXILIAR));//uso el ObjectOutputStream de java para escribir en un fichero nuevo
+
+
+            //Instancio un objeto a nulo
+            Object aux = null;
+            // Se lee el primer objeto
+            aux = ois.readObject();
+
+
+            while (aux != null) {//mientras haya objetos
+                try{
+                    if (aux instanceof Producto && !((Producto) aux).getCodigoBarras().equals(codigoBarras)) {//mientras el objeto sea una instancia de Producto, porque quiero solo los productos
+                        //y mientras el codigo de barras dado no sea igual que el del objeto leido, para no grabar el que queremos borrar
+
+                        oos.writeObject(aux);//escribo el objeto en  el fichero
+                    }
+                    aux = ois.readObject();//leo el siguienteº
+
+                }catch (EOFException e){
+                    aux = null;//si salta la excepcion, pongo el objeto a nulo para salir del bucle
+                }
+
+            }
+
+        }catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+
+        } finally{
+
+            if (oos != null) {
+                cerrarObjectOutput(oos);//cierro el objectOutputStream
+            }
+
+            try {
+                if (ois != null) {
+                    ois.close();//cierro el objectInputStream
+                }
+            } catch (IOException e) {//si salta la excepcion  IOException
+                e.printStackTrace();//muestro la excepcion
+            }
+        }
+
+    }
+
+
+    /**
+     * Cabecera: public static void actualizarProducto(String codigoBarras)
+     * Precondiciones: fichero creado
+     * Entradas:  Producto modificao
+     * Salida: niunguna
+     * Postcondiciones: Borra el objeto p en el fichero cojn el codigo igual al dado
+     */
+    public static void acttualizarProducto(Producto modificao){
+        File fichero = new File(NOMBRE_DIRECTO);
+        File ficheroaUX = new File(AUXILIAR);
+
+        ObjectInputStream ois = null; //Instancio el ObjectInputStream y lo pongo a nulo
+        ObjectOutputStream oos = null ;//Instancio el ObjectOutputStream y lo pongo a nulo
+
+        try{
+            ficheroaUX.createNewFile();
+
             ois = new ObjectInputStream(new FileInputStream(NOMBRE_DIRECTO));
 
             oos = new ObjectOutputStream(new FileOutputStream(AUXILIAR));//uso el ObjectOutputStream de java para escribir en un fichero nuevo
@@ -150,9 +215,13 @@ public class FileAccessObjects {
 
             while (aux != null) {
                 try{
-                    if (aux instanceof Producto && ((Producto) aux).getCodigoBarras() != codigoBarras) {//mientras el objeto sea una instancia de Producto, porque quiero solo los productos
+                    if (aux instanceof Producto) {//mientras el objeto sea una instancia de Producto, porque quiero solo los productos
 
-                        oos.writeObject(aux);//escribo el objeto en  el fichero
+                        if (((Producto) aux).getCodigoBarras().equals(modificao.getCodigoBarras())){
+                            oos.writeObject(modificao);
+                        }else{
+                            oos.writeObject(aux);//escribo el objeto en  el fichero
+                        }
                     }
                     aux = ois.readObject();//leo el siguienteº
 
@@ -162,23 +231,27 @@ public class FileAccessObjects {
 
             }
 
-            fichero.delete();
-            ficheroaUX.renameTo(fichero);
-
 
         }catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
 
         } finally{
 
+            if (oos != null) {
+                cerrarObjectOutput(oos);//cierro el objectOutputStream
+            }
+
             try {
-                ois.close();//cierro el objectInputStream
+                if (ois != null) {
+                    ois.close();//cierro el objectInputStream
+                }
             } catch (IOException e) {//si salta la excepcion  IOException
                 e.printStackTrace();//muestro la excepcion
             }
         }
 
     }
+
 
     /**
      * Cabecera: private void cerrarObjectOutput(ObjectOutputStream oos)
@@ -204,11 +277,28 @@ public class FileAccessObjects {
      * Salida: niunguna
      * Postcondiciones: borra el fichero
      */
-    public static void borrarFichero(){
+    public static void borrarFichero(String nombre){
         File fichero = new File(NOMBRE_DIRECTO);
         fichero.delete();//metodo de la clase file para borrar el fichero
 
     }
 
+
+    /**
+     * Cabecera: public static void cambiarFichero()
+     * Precondiciones:fichero creado
+     * Entradas: ninguna
+     * Salida: niunguna
+     * Postcondiciones: renombra el fichero auxiliar, con el nokmbre del anterior para guardar los cambios y conservar el nombre del archivo origial
+     */
+    public static void cambiarNombre() {
+        File fichero = new File(NOMBRE_DIRECTO);
+        File ficheroaUX = new File(AUXILIAR);
+        File master = fichero;
+
+        fichero.delete();//borro el fichero inicial
+        ficheroaUX.renameTo(master);//renombro el auxiliar con los cambios guardados al master, que tiene la referencia del anterior
+
+    }
 
 }
